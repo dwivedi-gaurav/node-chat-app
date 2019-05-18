@@ -16,9 +16,21 @@ var io=socketIO(server);
 io.on('connection',(socket)=>{
   console.log('New user connected.');
 
+  socket.emit('newMessage',{
+    from:'gaurav@gmail.com',
+    text:'Hey there, Gaurav here.',
+    createdAt:123
+  });
+
+
+  socket.on('createMessage',function(newMessage){
+    console.log('createdMessage',newMessage);
+  });
+
   socket.on('disconnect',()=>{
     console.log('Disconnected from user');
   });
+
 });
 
 const port=process.env.PORT||3000;
