@@ -16,6 +16,18 @@ var io=socketIO(server);
 io.on('connection',(socket)=>{
   console.log('New user connected.');
 
+  socket.emit('newMessage',{
+    from:'admin@chatApp.com',
+    text:'Hi there, Welcome to chat app',
+    createdAt:new Date().getTime()
+  });
+
+  socket.broadcast.emit('newMessage',{
+    from:'admin@chatApp.com',
+    text:'Hi there, New user joined',
+    createdAt:new Date().getTime()
+  });
+
   socket.on('createMessage',function(newMessage){
     console.log('createdMessage',newMessage);
     io.emit('newMessage',{
@@ -23,6 +35,11 @@ io.on('connection',(socket)=>{
       text:newMessage.text,
       createdAt:new Date().getTime()
     });
+    // socket.broadcast.emit('newMessage',{
+    //   from:newMessage.from,
+    //   text:newMessage.text,
+    //   createdAt:new Date().getTime()
+    // });
   });
 
   socket.on('disconnect',()=>{
