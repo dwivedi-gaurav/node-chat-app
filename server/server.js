@@ -2,7 +2,7 @@ const express=require('express');
 const socketIO=require('socket.io');
 const http=require('http');
 const path=require('path');
-const {generateMessage}=require('./utils/message');
+const {generateMessage,generateLocationMessage}=require('./utils/message');
 
 const publicPath=path.join(__dirname,'../public');
 
@@ -24,12 +24,12 @@ io.on('connection',(socket)=>{
   socket.on('createMessage',function(newMessage,callback){
     console.log('createdMessage',newMessage);
     io.emit('newMessage',generateMessage(newMessage.from,newMessage.text));
-    callback('This is from the server.');
-    // socket.broadcast.emit('newMessage',{
-    //   from:newMessage.from,
-    //   text:newMessage.text,
-    //   createdAt:new Date().getTime()
-    // });
+    callback('This is from the server.'); //Acknowledgement
+  });
+
+  socket.on('createLocationMessage',function(location,callback){
+    io.emit('newLocationMessage',generateLocationMessage('User',location.latitude,location.longitude));
+    callback('This is from the server.'); //Acknowledgement
   });
 
   socket.on('disconnect',()=>{
