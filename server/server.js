@@ -24,12 +24,12 @@ io.on('connection',(socket)=>{
   socket.on('createMessage',function(newMessage,callback){
     console.log('createdMessage',newMessage);
     io.emit('newMessage',generateMessage(newMessage.from,newMessage.text));
-    callback('This is from the server.'); //Acknowledgement
+    callback(); //Acknowledgement
   });
 
   socket.on('createLocationMessage',function(location,callback){
     io.emit('newLocationMessage',generateLocationMessage('User',location.latitude,location.longitude));
-    callback('This is from the server.'); //Acknowledgement
+    callback(); //Acknowledgement
   });
 
   socket.on('disconnect',()=>{
