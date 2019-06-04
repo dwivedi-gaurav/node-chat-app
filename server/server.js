@@ -19,21 +19,27 @@ var users=new Users();
 //Register an event listener, connection is a default event which listens for a new connection
 io.on('connection',(socket)=>{
   console.log('New user connected.');
-
+  socket.emit('updateRoomDropdown',users.getRoomList());
   socket.on('join',(params,callback)=>{
 
-    if(!isRealString(params.name) || !isRealString(params.room)){
+    if(!isRealString(params.name) || !(isRealString(params.room)||isRealString(params._room))){
       return callback('Valid room and name are required.');
     }
+    var room;
+    if(params.room){
+      room=params.room;
+    }else{
+      room=params._room;
+    }
 
-    socket.join(params.room);
+    socket.join(room);
     users.removeUser(socket.id);
-    users.addUser(socket.id,params.name,params.room);
+    users.addUser(socket.id,params.name,room);
 
-    io.to(params.room).emit('updateUserList',users.getUserList(params.room));
+    io.to(room).emit('updateUserList',users.getUserList(room));
 
     socket.emit('newMessage',generateMessage('Admin','Welcome to the chat app.'));
-    socket.broadcast.to(params.room).emit('newMessage',generateMessage('Admin',`${params.name} has joined.`));
+    socket.broadcast.to(room).emit('newMessage',generateMessage('Admin',`${params.name} has joined.`));
 
     callback();
   });

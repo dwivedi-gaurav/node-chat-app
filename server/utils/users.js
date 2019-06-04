@@ -1,15 +1,18 @@
 class Users{
   constructor (){
     this.users=[];
+    this.rooms=[];
   }
   addUser(id,name,room){
     var user={id,name,room};
     this.users.push(user);
+    if(this.rooms.indexOf(room.toUpperCase())<0){
+      this.rooms.push(room.toUpperCase());
+    }
     return user;
   }
   removeUser(id){
     var user=this.getUser(id);
-    //console.log('getUser inside remove user:',user);
     if(user){
       this.users=this.users.filter((user)=>{
         return user.id!==id;
@@ -31,6 +34,9 @@ class Users{
       return user.name;
     });
     return namesArray;
+  }
+  getRoomList(){
+    return this.rooms;
   }
 }
 

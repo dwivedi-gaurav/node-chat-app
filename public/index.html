@@ -23,6 +23,12 @@
                   <label for="room">Join room by name</label>
                   <input type="text" class="form-control" id="room" name="room">
                 </div>
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1">Select existing room</label>
+                  <select class="form-control" id="existingRoom" name="_room">
+                    <option value="">Select</option>
+                  </select>
+                </div>
                 <button type="submit" class="btn btn-primary btn-block">Join</button>
               </form>
             </div>
@@ -31,7 +37,9 @@
       </div>
     </div>
 
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/js/libs/jquery-3.4.1.min.js"></script>
     <script src="/js/libs/bootstrap.min.js"></script>
+    <script src="/js/index.js"></script>
   </body>
 </html>
